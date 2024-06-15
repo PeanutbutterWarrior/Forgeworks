@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkhodavpbfqsw"]
+
+[ext_resource type="Script" path="res://Scripts/MetalBar.gd" id="1_oalq7"]
+[ext_resource type="Script" path="res://Scripts/WhiteOutline.gd" id="2_s3hs0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_r4uqt"]
+size = Vector3(0.2, 0.2, 0.75)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xbk42"]
+points = PackedVector3Array(-0.1, -0.1, -0.359718, 0.1, 0.1, 0.351254, 0.1, -0.097619, 0.351254, -0.1, -0.1, 0.359718, -0.097619, 0.1, 0.351254, 0.1, 0.1, -0.351254, 0.1, -0.097619, -0.351254, -0.097619, 0.1, -0.351254)
+
+[node name="MetalBar" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00103855, 0.0024817, -0.00337476)
+script = ExtResource("1_oalq7")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_r4uqt")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_xbk42")
+
+[node name="WhiteOutline" type="Node" parent="." node_paths=PackedStringArray("mesh", "collider")]
+script = ExtResource("2_s3hs0")
+mesh = NodePath("../Mesh")
+collider = NodePath("..")

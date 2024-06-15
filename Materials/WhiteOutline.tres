@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ds1cxfefyxspy"]
+
+[ext_resource type="Shader" path="res://Shaders/WhiteOutline.gdshader" id="1_evsdi"]
+
+[resource]
+render_priority = 1
+shader = ExtResource("1_evsdi")
+shader_parameter/thickness = 0.05

@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://ci3hbxtrf40if"]
+
+[ext_resource type="Script" path="res://Scripts/CraftingTable.gd" id="1_kk0g5"]
+[ext_resource type="Script" path="res://Scripts/WhiteOutline.gd" id="2_gj3jb"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6aa06"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_c546f"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c2xfa"]
+size = Vector3(2, 1, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_etdcg"]
+size = Vector3(2, 0.3, 2)
+
+[node name="CraftingTable" type="Node3D"]
+script = ExtResource("1_kk0g5")
+
+[node name="Meshes" type="Node3D" parent="."]
+
+[node name="Leg1" type="MeshInstance3D" parent="Meshes"]
+transform = Transform3D(0.2, 0, 0, 0, 0.8, 0, 0, 0, 0.2, -0.9, 0.4, -0.9)
+mesh = SubResource("BoxMesh_6aa06")
+skeleton = NodePath("../..")
+
+[node name="Leg2" type="MeshInstance3D" parent="Meshes"]
+transform = Transform3D(0.2, 0, 0, 0, 0.8, 0, 0, 0, 0.2, 0.9, 0.4, -0.9)
+mesh = SubResource("BoxMesh_6aa06")
+skeleton = NodePath("../Leg1")
+
+[node name="Leg3" type="MeshInstance3D" parent="Meshes"]
+transform = Transform3D(0.2, 0, 0, 0, 0.8, 0, 0, 0, 0.2, -0.9, 0.4, 0.9)
+mesh = SubResource("BoxMesh_6aa06")
+skeleton = NodePath("../..")
+
+[node name="Leg4" type="MeshInstance3D" parent="Meshes"]
+transform = Transform3D(0.2, 0, 0, 0, 0.8, 0, 0, 0, 0.2, 0.9, 0.4, 0.9)
+mesh = SubResource("BoxMesh_6aa06")
+skeleton = NodePath("../Leg3")
+
+[node name="Top" type="MeshInstance3D" parent="Meshes"]
+transform = Transform3D(2, 0, 0, 0, 0.2, 0, 0, 0, 2, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_c546f")
+skeleton = NodePath("../..")
+
+[node name="Collider" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collider"]
+shape = SubResource("BoxShape3D_c2xfa")
+
+[node name="AnchorPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="WhiteOutline" type="Node" parent="." node_paths=PackedStringArray("mesh", "collider")]
+script = ExtResource("2_gj3jb")
+mesh = NodePath("../Meshes/Top")
+collider = NodePath("../Collider")
+
+[node name="GrabArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14444, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GrabArea"]
+shape = SubResource("BoxShape3D_etdcg")
+
+[connection signal="body_entered" from="GrabArea" to="." method="_on_grab_area_body_entered"]
