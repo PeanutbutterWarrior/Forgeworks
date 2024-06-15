@@ -4,7 +4,7 @@ func _ready():
 	add_exception(get_parent().get_parent())
 
 var prev_seen: Object = null
-func _physics_process(delta):
+func _physics_process(_delta):
 	if get_collider() != prev_seen:
 		if prev_seen != null:
 			SignalBus.stopped_looking_at.emit(prev_seen)

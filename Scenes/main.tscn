@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bf50wrbx7q4j8"]
+[gd_scene load_steps=24 format=3 uid="uid://bf50wrbx7q4j8"]
 
 [ext_resource type="PackedScene" uid="uid://dbyeerqbftftw" path="res://Scenes/Player.tscn" id="1_mtekt"]
 [ext_resource type="Texture2D" uid="uid://c5dj5hujpl8ko" path="res://Assets/pointer.png" id="3_1ej1g"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://bkhodavpbfqsw" path="res://Scenes/MetalBar.tscn" id="5_7cwoj"]
 [ext_resource type="PackedScene" uid="uid://c374q8g6sihbi" path="res://Scenes/furnace.tscn" id="6_1pgr1"]
 [ext_resource type="PackedScene" uid="uid://ci3hbxtrf40if" path="res://Scenes/CraftingTable.tscn" id="6_8gp43"]
+[ext_resource type="Script" path="res://Scripts/WhiteOutlineCamera.gd" id="7_jay7v"]
+[ext_resource type="Shader" path="res://Shaders/WhiteOutline.gdshader" id="8_e44x5"]
+[ext_resource type="Shader" path="res://Shaders/WhiteOutlineMask.gdshader" id="9_x0whq"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i62ca"]
 
@@ -24,6 +27,32 @@ material = SubResource("StandardMaterial3D_utoqn")
 size = Vector3(20, 0.1, 20)
 
 [sub_resource type="BoxMesh" id="BoxMesh_it55g"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_deckw"]
+viewport_path = NodePath("WhiteOutlineViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8l62u"]
+viewport_path = NodePath("WhiteOutlineViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c0pwm"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("8_e44x5")
+shader_parameter/thickness = 0.1
+shader_parameter/mask = SubResource("ViewportTexture_8l62u")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0np6c"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0v4g7"]
+material = SubResource("StandardMaterial3D_0np6c")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_68yoh"]
+render_priority = 1
+shader = ExtResource("9_x0whq")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5jb54"]
+material = SubResource("ShaderMaterial_68yoh")
 
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00128078, 0.00568295, 0.000641346)
@@ -146,8 +175,32 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_1ej1g")
 stretch_mode = 3
 
+[node name="TextureRect2" type="TextureRect" parent="HUD"]
+visible = false
+offset_right = 304.0
+offset_bottom = 221.0
+texture = SubResource("ViewportTexture_deckw")
+
 [node name="Furnace" parent="." instance=ExtResource("6_1pgr1")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -8.00877, 0.129956, 2.30929)
 
 [node name="CraftingTable" parent="." instance=ExtResource("6_8gp43")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.89756, 0.05, 1.0921)
+
+[node name="WhiteOutlineViewport" type="SubViewport" parent="."]
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="WhiteOutlineViewport" node_paths=PackedStringArray("player")]
+cull_mask = 2
+script = ExtResource("7_jay7v")
+player = NodePath("../../Player")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.94116, -0.21501)
+material_overlay = SubResource("ShaderMaterial_c0pwm")
+ignore_occlusion_culling = true
+mesh = SubResource("CapsuleMesh_0v4g7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+layers = 2
+mesh = SubResource("CapsuleMesh_5jb54")
