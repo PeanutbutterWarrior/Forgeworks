@@ -10,13 +10,13 @@ size = Vector3(1.4043, 4.02991, 1.4043)
 [sub_resource type="BoxShape3D" id="BoxShape3D_83s11"]
 size = Vector3(1.24164, 1, 1.28467)
 
-[node name="SquareHead" type="CollisionShape3D" node_paths=PackedStringArray("base", "attachment_points", "mesh")]
+[node name="SquareHead" type="CollisionShape3D" node_paths=PackedStringArray("base", "attachment_points", "meshes")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 shape = SubResource("BoxShape3D_txnn3")
 script = ExtResource("1_518rk")
 base = NodePath("AttachmentPoints/Bottom")
 attachment_points = [NodePath("AttachmentPoints/Top"), NodePath("AttachmentPoints/Bottom")]
-mesh = NodePath("Mesh")
+meshes = [NodePath("Mesh")]
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = ExtResource("2_wm71w")

@@ -1,7 +1,10 @@
 class_name Tool
 extends GrabbableBody
 
-@export var base_piece: ToolPart
+@export var base_piece: ToolPart:
+	set(value):
+		base_piece = value
+		update_configuration_warnings()
 
 @onready var white_outline := $WhiteOutline
 
@@ -13,13 +16,19 @@ static func create_with(obj: ToolPart) -> Tool:
 	tool.add_child(obj)
 	obj.position = Vector3.ZERO
 	obj.rotation = Vector3.ZERO
-	tool.get_child(0, true).add_mesh(obj.mesh)
 	return tool
+
+func _get_configuration_warnings():
+	if base_piece == null:
+		return ["Missing base piece"]
+	else:
+		return []
 
 func _ready():
 	for child in get_children():
 		if child is ToolPart:
-			white_outline.add_mesh(child.mesh)
+			for mesh in child.meshes:
+				white_outline.add_mesh(mesh)
 
 func add_tool(tool: Tool, attach_point: Area3D):
 	SignalBus.object_taken.emit(tool, self)
@@ -30,9 +39,7 @@ func add_tool(tool: Tool, attach_point: Area3D):
 	for part in tool.get_children():
 		if part is ToolPart:
 			part.reparent(self)
-			white_outline.add_mesh(part.mesh)
+			for mesh in part.meshes:
+				white_outline.add_mesh(mesh)
 		
 	tool.queue_free()
-
-func set_base_piece(obj):
-	base_piece = obj

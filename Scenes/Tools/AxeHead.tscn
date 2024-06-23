@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://c27iwanh1ib08"]
+
+[ext_resource type="Script" path="res://Scripts/Tools/ToolPart.gd" id="1_q3l1b"]
+[ext_resource type="ArrayMesh" uid="uid://buskpcvf6pfvq" path="res://Meshes/Tools/AxeHead.res" id="2_1ktjl"]
+[ext_resource type="ArrayMesh" uid="uid://dv5cvnn40bp4u" path="res://Meshes/Tools/AxeShaft.res" id="3_2n5xu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wkd4q"]
+margin = 0.0
+size = Vector3(2.01965, 3.203, 4.94492)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_btncl"]
+size = Vector3(1, 0.793167, 1)
+
+[node name="AxeHead" type="CollisionShape3D" node_paths=PackedStringArray("base")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("BoxShape3D_wkd4q")
+script = ExtResource("1_q3l1b")
+base = NodePath("Bottom")
+
+[node name="MeshHead" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.46992)
+mesh = ExtResource("2_1ktjl")
+
+[node name="MeshShaft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.46992)
+mesh = ExtResource("3_2n5xu")
+
+[node name="Top" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30974, 1.46992)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Top"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.186027, 0)
+shape = SubResource("BoxShape3D_btncl")
+
+[node name="Bottom" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, -1.50996e-07, 0, 1.50996e-07, -1, 0, -1.3118, 1.46992)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bottom"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.186027, 0)
+shape = SubResource("BoxShape3D_btncl")
