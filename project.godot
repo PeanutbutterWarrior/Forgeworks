@@ -54,3 +54,4 @@ jump={
 [layer_names]
 
 3d_render/layer_2="Outline Mask"
+3d_physics/layer_2="Interact"

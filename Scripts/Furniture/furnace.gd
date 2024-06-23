@@ -1,6 +1,6 @@
 extends Node3D
 
-static var MetalBarPacked := preload("res://Scenes/MetalBar.tscn")
+static var MetalBarPacked := preload("res://Scenes/Ingredients/MetalBar.tscn")
 
 @onready var drop_point := $BarDrop
 @onready var drop_timer := $DropTimer

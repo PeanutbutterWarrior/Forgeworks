@@ -1,14 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://bf50wrbx7q4j8"]
+[gd_scene load_steps=18 format=3 uid="uid://bf50wrbx7q4j8"]
 
 [ext_resource type="PackedScene" uid="uid://dbyeerqbftftw" path="res://Scenes/Player.tscn" id="1_mtekt"]
 [ext_resource type="Texture2D" uid="uid://c5dj5hujpl8ko" path="res://Assets/pointer.png" id="3_1ej1g"]
-[ext_resource type="PackedScene" uid="uid://bolhgfx78ogo" path="res://Scenes/Ore.tscn" id="4_7bsc3"]
-[ext_resource type="PackedScene" uid="uid://bkhodavpbfqsw" path="res://Scenes/MetalBar.tscn" id="5_7cwoj"]
-[ext_resource type="PackedScene" uid="uid://c374q8g6sihbi" path="res://Scenes/furnace.tscn" id="6_1pgr1"]
-[ext_resource type="PackedScene" uid="uid://ci3hbxtrf40if" path="res://Scenes/CraftingTable.tscn" id="6_8gp43"]
+[ext_resource type="PackedScene" uid="uid://bolhgfx78ogo" path="res://Scenes/Ingredients/Ore.tscn" id="4_7bsc3"]
+[ext_resource type="PackedScene" uid="uid://bkhodavpbfqsw" path="res://Scenes/Ingredients/MetalBar.tscn" id="5_7cwoj"]
+[ext_resource type="PackedScene" uid="uid://c374q8g6sihbi" path="res://Scenes/Furniture/furnace.tscn" id="6_1pgr1"]
 [ext_resource type="Script" path="res://Scripts/WhiteOutlineCamera.gd" id="7_jay7v"]
-[ext_resource type="Shader" path="res://Shaders/WhiteOutline.gdshader" id="8_e44x5"]
-[ext_resource type="Shader" path="res://Shaders/WhiteOutlineMask.gdshader" id="9_x0whq"]
+[ext_resource type="PackedScene" uid="uid://dt5thqesmixqy" path="res://Scenes/Tools/Tool.tscn" id="8_8k6v7"]
+[ext_resource type="PackedScene" uid="uid://ci3hbxtrf40if" path="res://Scenes/Furniture/CraftingTable.tscn" id="8_x3yes"]
+[ext_resource type="PackedScene" uid="uid://dq2v2odk8scdm" path="res://Scenes/Tools/Handle.tscn" id="9_irc58"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i62ca"]
 
@@ -31,31 +31,8 @@ size = Vector3(20, 0.1, 20)
 [sub_resource type="ViewportTexture" id="ViewportTexture_deckw"]
 viewport_path = NodePath("WhiteOutlineViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_8l62u"]
-viewport_path = NodePath("WhiteOutlineViewport")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_c0pwm"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("8_e44x5")
-shader_parameter/thickness = 0.1
-shader_parameter/mask = SubResource("ViewportTexture_8l62u")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0np6c"]
-albedo_color = Color(0, 0, 0, 1)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_0v4g7"]
-material = SubResource("StandardMaterial3D_0np6c")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_68yoh"]
-render_priority = 1
-shader = ExtResource("9_x0whq")
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_5jb54"]
-material = SubResource("ShaderMaterial_68yoh")
-
 [node name="Node3D" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00128078, 0.00568295, 0.000641346)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.011152, 0.00568283, 0.00537109)
 
 [node name="Player" parent="." instance=ExtResource("1_mtekt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.329587, 2.00043, 0.659607)
@@ -184,7 +161,7 @@ texture = SubResource("ViewportTexture_deckw")
 [node name="Furnace" parent="." instance=ExtResource("6_1pgr1")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -8.00877, 0.129956, 2.30929)
 
-[node name="CraftingTable" parent="." instance=ExtResource("6_8gp43")]
+[node name="CraftingTable" parent="." instance=ExtResource("8_x3yes")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.89756, 0.05, 1.0921)
 
 [node name="WhiteOutlineViewport" type="SubViewport" parent="."]
@@ -195,12 +172,14 @@ cull_mask = 2
 script = ExtResource("7_jay7v")
 player = NodePath("../../Player")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.94116, -0.21501)
-material_overlay = SubResource("ShaderMaterial_c0pwm")
-ignore_occlusion_culling = true
-mesh = SubResource("CapsuleMesh_0v4g7")
+[node name="Tool" parent="." node_paths=PackedStringArray("base_piece") instance=ExtResource("8_8k6v7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.40861, 2.44646, 0)
+base_piece = NodePath("Handle")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
-layers = 2
-mesh = SubResource("CapsuleMesh_5jb54")
+[node name="Handle" parent="Tool" instance=ExtResource("9_irc58")]
+
+[node name="Tool2" parent="." node_paths=PackedStringArray("base_piece") instance=ExtResource("8_8k6v7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.07756, 2.30374, 0.0393682)
+base_piece = NodePath("Handle")
+
+[node name="Handle" parent="Tool2" instance=ExtResource("9_irc58")]

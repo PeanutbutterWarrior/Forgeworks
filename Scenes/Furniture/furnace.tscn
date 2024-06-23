@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c374q8g6sihbi"]
 
-[ext_resource type="Script" path="res://Scripts/furnace.gd" id="1_g6wff"]
+[ext_resource type="Script" path="res://Scripts/Furniture/furnace.gd" id="1_g6wff"]
 [ext_resource type="ArrayMesh" uid="uid://dxj7fvejdc30d" path="res://Assets/furnace.tres" id="2_rukjj"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_6neil"]

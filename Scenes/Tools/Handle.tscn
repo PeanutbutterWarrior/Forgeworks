@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://dq2v2odk8scdm"]
+
+[ext_resource type="Script" path="res://Scripts/Tools/ToolPart.gd" id="1_i73yn"]
+[ext_resource type="ArrayMesh" uid="uid://cudo782rwggi4" path="res://Meshes/Tools/Shaft.res" id="2_fsfmi"]
+[ext_resource type="Script" path="res://Scripts/Tools/AttachmentPoint.gd" id="3_by0n3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2mvbk"]
+size = Vector3(1.2431, 3.99142, 1.26282)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_44gj5"]
+size = Vector3(1.24164, 1, 1.28467)
+
+[node name="Handle" type="CollisionShape3D" node_paths=PackedStringArray("base", "mesh")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("BoxShape3D_2mvbk")
+script = ExtResource("1_i73yn")
+base = NodePath("AttachmentPoints/Bottom")
+mesh = NodePath("Mesh")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_fsfmi")
+
+[node name="AttachmentPoints" type="Node3D" parent="."]
+
+[node name="Top" type="Area3D" parent="AttachmentPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99203, 0)
+collision_layer = 3
+script = ExtResource("3_by0n3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttachmentPoints/Top"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000152588, 0, 0.00488281)
+shape = SubResource("BoxShape3D_44gj5")
+
+[node name="Bottom" type="Area3D" parent="AttachmentPoints"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0.00211191, -1.99802, 0.00575686)
+collision_layer = 3
+script = ExtResource("3_by0n3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttachmentPoints/Bottom"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000152588, 0, 0.00488281)
+shape = SubResource("BoxShape3D_44gj5")

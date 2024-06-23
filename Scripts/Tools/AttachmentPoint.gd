@@ -1,0 +1,2 @@
+class_name AttachmentPoint
+extends Area3D

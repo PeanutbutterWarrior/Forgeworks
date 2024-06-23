@@ -4,8 +4,8 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const MAX_THROW_TIME = 0.75  # seconds
 const THROW_FORCE = 15
-const HOLD_POINT = Vector3(0, 0, -2)
-const PULL_POINT = Vector3(0, 0, -1.5)
+const THROW_DIRECTION = Vector3(0, 0, -1)
+const PULL_POINT_OFFSET = Vector3(0, 0, 0.5)
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -13,6 +13,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var camera := $Camera
 @onready var ray := $Camera/LookRay
 @onready var hold_point : Node3D = $Camera/HoldPoint
+@onready var HOLD_POINT_POSITION = $Camera/HoldPoint.position
 
 var held_object : GrabbableBody = null
 var hold_timer : float = 0;
@@ -51,14 +52,17 @@ func _unhandled_input(event: InputEvent):
 			camera.rotation.x = clamp(camera.rotation.x, -PI / 2 + 0.01, PI / 2 - 0.01)
 		elif event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
-				if held_object != null:
+				if ray.get_collider() is AttachmentPoint and held_object is Tool:
+					ray.get_collider().get_parent().get_parent().get_parent().add_tool(held_object, ray.get_collider())
+				elif held_object != null:
 					drop_object()
 				elif ray.get_collider() is GrabbableBody:
 					grab_object(ray.get_collider())
 			elif event.button_index == MOUSE_BUTTON_RIGHT and !event.pressed and held_object != null:
-				var throw_direction = camera.global_position.direction_to(hold_point.global_position)
+				hold_point.position = THROW_DIRECTION
+				var throw_direction: Vector3 = camera.global_position.direction_to(hold_point.global_position)
 				held_object.apply_central_impulse(throw_direction * lerp(0, THROW_FORCE, hold_timer))
-				hold_point.position = HOLD_POINT
+				hold_point.position = HOLD_POINT_POSITION
 				hold_timer = 0
 				drop_object()
 	
@@ -86,6 +90,6 @@ func _physics_process(delta):
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and held_object != null:
 		hold_timer += delta / MAX_THROW_TIME
 		hold_timer = clamp(hold_timer, 0, 1)
-		hold_point.position = HOLD_POINT.lerp(PULL_POINT, hold_timer)
+		hold_point.position = HOLD_POINT_POSITION.lerp(HOLD_POINT_POSITION + PULL_POINT_OFFSET, hold_timer)
 
 	move_and_slide()

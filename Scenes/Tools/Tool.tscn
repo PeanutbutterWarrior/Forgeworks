@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dt5thqesmixqy"]
+
+[ext_resource type="Script" path="res://Scripts/Tools/Tool.gd" id="1_741h0"]
+[ext_resource type="Script" path="res://Scripts/WhiteOutline.gd" id="2_h3t0x"]
+
+[node name="Tool" type="RigidBody3D"]
+collision_layer = 3
+script = ExtResource("1_741h0")
+
+[node name="WhiteOutline" type="Node" parent="." node_paths=PackedStringArray("colliders")]
+script = ExtResource("2_h3t0x")
+colliders = [NodePath("..")]

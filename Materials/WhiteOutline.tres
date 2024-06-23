@@ -5,4 +5,4 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_evsdi")
-shader_parameter/thickness = 0.1
+shader_parameter/thickness = 5.0

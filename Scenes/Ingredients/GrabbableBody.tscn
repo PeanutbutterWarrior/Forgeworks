@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://b0dcoo4gd68nu"]
 
-[ext_resource type="Script" path="res://Scripts/GrabbableBody.gd" id="1_o4xih"]
+[ext_resource type="Script" path="res://Scripts/Ingredients/GrabbableBody.gd" id="1_o4xih"]
 
 [node name="GrabbableBody" type="RigidBody3D"]
+collision_layer = 3
 script = ExtResource("1_o4xih")
